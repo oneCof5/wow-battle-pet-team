@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+<ModulePrefs title="WBPT: WoW Battle Pet Team"
+	title_url="http://www.TheGrownUpGamer.com/p/wow-battle-pet-team.html"
+	description="A Blogger Gadget to show a character's current battle pet team in the World of Warcraft(TM)"
+	height="200"
+	screenshot="tbd"
+	thumbnail="tbd"
+	author="Chris"
+	author_email="info@TheGrownUpGamer.com" >
+	<Require feature="dynamic-height" />
+	<Require feature="setprefs" />
+	<Optional feature="skins" />
+</ModulePrefs>
+<UserPref name="wbpt_bnReg" display_name="BattleNet Region" default_value="us" datatype="enum">
+	<EnumValue value="us" display_value="US"/>
+	<EnumValue value="eu" display_value="Europe"/>
+	<EnumValue value="kr" display_value="Korea"/>
+	<EnumValue value="tw" display_value="Taiwan"/>
+	<EnumValue value="cn" display_value="China"/>
+</UserPref>
+<UserPref name="wbpt_bnLoc" display_name="BattleNet (Region) Locale" datatype="enum" required="false">
+	<EnumValue value="en_US" display_value="(US) English"/>
+	<EnumValue value="es_MX" display_value="(US) Español"/>
+	<EnumValue value="pt_BR" display_value="(US) Português"/>
+	<EnumValue value="en_GB" display_value="(EU) English"/>
+	<EnumValue value="fr_FR" display_value="(EU) Français"/>
+	<EnumValue value="ru_RU" display_value="(EU) Pусский"/>
+	<EnumValue value="de_DE" display_value="(EU) Deutsch"/>
+	<EnumValue value="it_IT" display_value="(EU) Italiano"/>
+	<EnumValue value="es_ES" display_value="(EU) Español"/>
+	<EnumValue value="pt_PT" display_value="(EU) Português"/>
+</UserPref>
+<UserPref name="wbpt_bnRealm" display_name="Realm Stub" default_value="borean-tundra"/>
+<UserPref name="wbpt_charName" display_name="Character Name" default_value="Cibolero"/>
+<UserPref name="wbpt_fontFamily" display_name="Font Family" default_value="Arial, Helvetica, sans-serif"/>
+<UserPref name="wbpt_fontColor" display_name="Font Color" default_value="#FFFFFF"/>
+<UserPref name="wbpt_fontSize" display_name="Font Size" default_value="16px"/>
+<Content type="html">
+<![CDATA[
+
+]]>
+</Content>
+</Module>
