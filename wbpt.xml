@@ -19,17 +19,17 @@
 	<EnumValue value="tw" display_value="Taiwan"/>
 	<EnumValue value="cn" display_value="China"/>
 </UserPref>
-<UserPref name="wbpt_bnLoc" display_name="BattleNet (Region) Locale" datatype="enum" required="false">
-	<EnumValue value="en_US" display_value="(US) English"/>
-	<EnumValue value="es_MX" display_value="(US) Español"/>
-	<EnumValue value="pt_BR" display_value="(US) Português"/>
-	<EnumValue value="en_GB" display_value="(EU) English"/>
-	<EnumValue value="fr_FR" display_value="(EU) Français"/>
-	<EnumValue value="ru_RU" display_value="(EU) Pусский"/>
-	<EnumValue value="de_DE" display_value="(EU) Deutsch"/>
-	<EnumValue value="it_IT" display_value="(EU) Italiano"/>
-	<EnumValue value="es_ES" display_value="(EU) Español"/>
-	<EnumValue value="pt_PT" display_value="(EU) Português"/>
+<UserPref name="wbpt_bnLoc" display_name="BattleNet Region: Locale" datatype="enum" required="false">
+	<EnumValue value="en_US" display_value="US English"/>
+	<EnumValue value="es_MX" display_value="US Español"/>
+	<EnumValue value="pt_BR" display_value="US Português"/>
+	<EnumValue value="en_GB" display_value="EU English"/>
+	<EnumValue value="fr_FR" display_value="EU Français"/>
+	<EnumValue value="ru_RU" display_value="EU Pусский"/>
+	<EnumValue value="de_DE" display_value="EU Deutsch"/>
+	<EnumValue value="it_IT" display_value="EU Italiano"/>
+	<EnumValue value="es_ES" display_value="EU Español"/>
+	<EnumValue value="pt_PT" display_value="EU Português"/>
 </UserPref>
 <UserPref name="wbpt_bnRealm" display_name="Realm Stub" default_value="borean-tundra"/>
 <UserPref name="wbpt_charName" display_name="Character Name" default_value="Cibolero"/>
@@ -38,6 +38,305 @@
 <UserPref name="wbpt_fontSize" display_name="Font Size" default_value="16px"/>
 <Content type="html">
 <![CDATA[
+
+<!DOCTYPE html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta>
+<!-- JQuery -->
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+<body>
+<!-- the body has one div, and the script populates it -->
+<div id="oCo5_BPT"></div>
+<script type="text/javascript">
+
+// VARIABLES
+var html="";
+var myCss="";
+var cssClear = "clear:both; display:block; overflow:hidden; visibility:hidden; ";
+cssClear += "width:0; height:0;";
+var bnHost = "";
+var bnUrl = "";
+
+// define color codes for CSS
+var wbpt_qc = new Array();
+wbpt_qc[0]="#9d9d9d"; /* poor (gray) */
+wbpt_qc[1]="#ffffff"; /* common (white) */
+wbpt_qc[2]="#1eff00"; /* uncommon (green) */
+wbpt_qc[3]="#0081ff"; /* #0070dd rare (blue) */
+wbpt_qc[4]="#c600ff"; /* #a335ee epic (purple) */
+wbpt_qc[5]="#ff8000"; /* lengendary (orange) */
+wbpt_qc[6]="#e5cc80"; /* artifact (gold) */
+wbpt_qc[7]="#e5cc80"; /* heirloom (gold) */
+
+// assign the gadget preferences to variables
+var prefs = new gadgets.Prefs();
+var bnRegion=escape(prefs.getString("wbpt_bnReg"));
+var bnLocale=escape(prefs.getString("wbpt_bnLoc"));
+var bnRealm=escape(prefs.getString("wbpt_bnRealm"));
+var bnCharacter=escape(prefs.getString("wbpt_charName"));
+var wbpt_ff=prefs.getString("wbpt_fontFamily");
+var wbpt_fc=prefs.getString("wbpt_fontColor");
+var wbpt_fs=prefs.getString("wbpt_fontSize");
+
+// FUNCTIONS
+/* create some HTML */
+function assembleHtml (tag, id, style, text) {
+var newHtml = "<"+tag;
+if (id != "") { newHtml += " id=\""+id+"\""; };
+if (style != "") { newHtml += " style=\""+style+"\""; };
+newHtml += ">"+text+"</"+tag+">";
+html+= newHtml;
+}
+
+// PROGRAM FLOW
+// assign the base battlenet host
+bnHost="http://"+bnRegion+".battle.net";
+
+// Figure out if we need to change the host for China
+if (bnRegion == "cn") { bnHost="http://www.battlenet.com.cn"; };
+
+/* First, get the pet information from the APIs at /api/wow/data/pet/types */
+
+bnUrl=bnHost+"/api/wow/data/pet/types";
+
+// if a locale is selected, append it
+if (bnLocale != "") { bnUrl=bnUrl+"?locale="+bnLocale; };
+
+// append the callback
+bnUrl=bnUrl+"&jsonp=?";
+
+$.getJSON(bnUrl, function (battlePetJson) {
+
+/* Now that we've gotten the base API, get the specific Character data */
+
+// Update the URL
+bnUrl=bnHost+"/api/wow/character/"+bnRealm+"/"+bnCharacter+"?fields=pets,petSlots";
+
+// if a locale is selected, append it
+if (bnLocale != "") { bnUrl=bnUrl+"&locale="+bnLocale; };
+
+// append the callback
+bnUrl=bnUrl+"&jsonp=?";
+
+// Get the Character data with pets and petSlots as 'bnData'
+$.getJSON(bnUrl,function(bnData){
+
+// With the Character, now get the petSlots as 'bnPetSlots'
+$(bnData.petSlots).each(function(idxBPT, bnPetSlots) {
+
+// Write the div for this pet
+myCss = "margin: 0px 0px 10px 0px;";
+myCss += "font-family:"+wbpt_ff+"; color:"+wbpt_fc+"; font-size:"+wbpt_fs+";";
+assembleHtml ("div", "wbpt_PetSlot_"+bnPetSlots.slot, myCss, "");
+$(html).appendTo("#oCo5_BPT");
+gadgets.window.adjustHeight(); // resize window
+
+html = "";
+
+// With the petSlots, now get the known pets as 'bnPets'
+$(bnData.pets.collected).each (function(idxBP, bnPets) {
+
+// match the ID in petSlots with the associated pets entry (get the details)
+if (bnPets.battlePetId == bnPetSlots.battlePetId) {
+/*
+Now that we have the correct pet, write out the following:
+Pet Icon
+Pet Name
+Pet Level
+Pet Family Icon
+Passive Bonus
+Strengths and Weaknesses
+Description
+*/
+
+// div the pet slot
+myCss = "";
+assembleHtml ("div", "wbpt_head_"+bnPetSlots.slot, myCss, "");
+assembleHtml ("div", "wbpt_stat_"+bnPetSlots.slot, myCss, "");
+assembleHtml ("div", "wbpt_desc_"+bnPetSlots.slot, myCss, "");
+$(html).appendTo("#wbpt_PetSlot_"+bnPetSlots.slot);
+gadgets.window.adjustHeight(); // resize window
+html = "";
+
+// div the heading
+myCss = "float:left; margin: 0px 4px 0px 0px;";
+assembleHtml ("div", "wbpt_head_petIcon_"+bnPetSlots.slot, myCss, "");
+myCss = "float:left;vertical-align:top;";
+assembleHtml ("div", "wbpt_head_pet_"+bnPetSlots.slot, myCss, "");
+myCss = "float:right;";
+assembleHtml ("div", "wbpt_head_famIcon_"+bnPetSlots.slot, myCss, "");
+$(html).appendTo("#wbpt_head_"+bnPetSlots.slot);
+gadgets.window.adjustHeight(); // resize window
+html = "";
+
+// div the heading text
+myCss = "";
+assembleHtml ("div", "wbpt_head_pet_name_"+bnPetSlots.slot, myCss, "");
+myCss = "float:left;";
+assembleHtml ("div", "wbpt_head_pet_lvl_"+bnPetSlots.slot, myCss, "");
+myCss = "float:left;";
+assembleHtml ("div", "wbpt_head_pet_spc_"+bnPetSlots.slot, myCss, "");
+myCss = "float:left;";
+assembleHtml ("div", "wbpt_head_pet_fam_"+bnPetSlots.slot, myCss, "");
+assembleHtml ("div", "", cssClear, "");
+$(html).appendTo("#wbpt_head_pet_"+bnPetSlots.slot);
+gadgets.window.adjustHeight(); // resize window
+html = "";
+
+// ICON
+myCss = "background-image:url('http://media.blizzard.com/wow/icons/36/"+bnPets.icon+".jpg');";
+myCss += "width:36px; height: 36px; background-size: 36px;";
+myCss += "background-color: transparent; background-repeat: no-repeat;";
+assembleHtml ("div", "", myCss, "");
+$(html).appendTo("#wbpt_head_petIcon_"+bnPetSlots.slot);
+gadgets.window.adjustHeight(); // resize window
+html = ""; // clear out the HTML
+
+// NAME
+myCss = "margin:0px 2px; font-size:1.25em; color: "+wbpt_qc[bnPets.stats.petQualityId]+" !important;";
+assembleHtml ("div", "", myCss, bnPets.name);
+$(html).appendTo("#wbpt_head_pet_name_"+bnPetSlots.slot);
+gadgets.window.adjustHeight(); // resize window
+html = ""; // clear out the HTML
+
+// LEVEL
+myCss = "margin:0px 2px;font-size:0.90em; color: "+wbpt_qc[bnPets.stats.petQualityId]+" !important;";
+assembleHtml ("div", "", myCss, bnPets.stats.level);
+$(html).appendTo("#wbpt_head_pet_lvl_"+bnPetSlots.slot);
+gadgets.window.adjustHeight(); // resize window
+html = ""; // clear out the HTML
+
+// CREATURE (only if formally named)
+if (bnPets.name != bnPets.creatureName) {
+myCss = "margin:0px 2px;font-size:0.90em; color: "+wbpt_qc[bnPets.stats.petQualityId]+" !important;";
+assembleHtml ("div", "", myCss, bnPets.creatureName);
+$(html).appendTo("#wbpt_head_pet_spc_"+bnPetSlots.slot);
+gadgets.window.adjustHeight(); // resize window
+html = ""; // clear out the HTML
+};
+
+// STATS
+
+myCss = "background-image:url('"+bnHost+"/wow/static/images/model-viewer/stat-icon-health.png');";
+myCss += "background-color: transparent;background-repeat: no-repeat;float: left;padding-left: 22px;padding-top: 4px;width: 32px;height: 22px;margin: 0px 2px 0px 0px;vertical-align: bottom;";
+assembleHtml ("div", "", myCss, bnPets.stats.health);
+$(html).appendTo("#wbpt_stat_"+bnPetSlots.slot);
+gadgets.window.adjustHeight(); // resize window
+html = ""; // clear out the HTML
+
+myCss = "background-image:url('"+bnHost+"/wow/static/images/model-viewer/stat-icon-power.png');";
+myCss += "background-color: transparent;background-repeat: no-repeat;float: left;padding-left: 22px;padding-top: 4px;width: 32px;height: 22px;margin: 0px 2px 0px 0px;vertical-align: bottom;";
+assembleHtml ("div", "", myCss, bnPets.stats.power);
+$(html).appendTo("#wbpt_stat_"+bnPetSlots.slot);
+gadgets.window.adjustHeight(); // resize window
+html = ""; // clear out the HTML
+
+myCss = "background-image:url('"+bnHost+"/wow/static/images/model-viewer/stat-icon-speed.png');";
+myCss += "background-color: transparent;background-repeat: no-repeat;float: left;padding-left: 22px;padding-top: 4px;width: 32px;height: 22px;margin: 0px 2px 0px 0px;vertical-align: bottom;";
+assembleHtml ("div", "", myCss, bnPets.stats.speed);
+assembleHtml ("div", "", cssClear, "");
+$(html).appendTo("#wbpt_stat_"+bnPetSlots.slot);
+gadgets.window.adjustHeight(); // resize window
+html = ""; // clear out the HTML
+
+/* determine the pet type by looking up the species API using the species ID.
+For example, http://us.battle.net/api/wow/battlePet/species/465 for the ravager hatchling. */
+
+bnUrl=bnHost+"/api/wow/battlePet/species/"+bnPets.stats.speciesId;
+
+// if a locale is selected, append it
+if (bnLocale != "") { bnUrl=bnUrl+"?locale="+bnLocale; };
+
+// append the callback
+bnUrl=bnUrl+"&jsonp=?";
+
+$.getJSON(bnUrl, function (bnPetsSpecies) {
+
+/* figure out strengths and weaknesses and Passives using the pet type */
+
+$(battlePetJson.petTypes).each (function (idxBPJ, bnPetTypes) {
+
+
+if (bnPetsSpecies.petTypeId === bnPetTypes.id) {
+
+// PET FAMILY ICON
+myCss = "background-image:url('https://raw.github.com/oneCof5/wow-battle-pet-team/master/wbpt_icon_"+bnPetTypes.key+".png');";
+myCss += "background-color: transparent; background-repeat: no-repeat; margin: 2px 0px;";
+myCss += "cursor: default; width: 35px; height: 35px; text-align: center;";
+assembleHtml ("div", "", myCss, "");
+$(html).appendTo("#wbpt_head_famIcon_"+bnPetSlots.slot);
+gadgets.window.adjustHeight(); // resize window
+html = ""; // clear out the HTML
+
+// PET FAMILY NAME
+myCss = "margin:0px 4px;font-size:0.90em; color: "+wbpt_qc[bnPets.stats.petQualityId]+" !important;";
+assembleHtml ("div", "", myCss, bnPetTypes.name);
+$(html).appendTo("#wbpt_head_pet_fam_"+bnPetSlots.slot);
+gadgets.window.adjustHeight(); // resize window
+html = ""; // clear out the HTML
+
+// OFFENSIVE abilities are retrieved from the context pet
+$(battlePetJson.petTypes).each (function (idxOS, OS) {
+if (bnPetTypes.strongAgainstId === OS.id) {
+// we found the pet family that this pet is strong vs
+console.log ("OFF: Strong vs. "+OS.name);
+return false;
+};
+});
+
+$(battlePetJson.petTypes).each (function (idxOW, OW) {
+if (bnPetTypes.weakAgainstId === OW.id) {
+// we found the pet family that this pet is weak vs
+console.log ("OFF: Weak vs. "+OW.name);
+return false;
+};
+});
+
+// DEFENSIVE abilities are implied from other pet entries
+$(battlePetJson.petTypes).each (function (idxDW, DW) {
+if (DW.strongAgainstId === bnPetTypes.id) {
+// we found the pet family that is strong against this one
+console.log ("DEF: Weak vs. "+DW.name);
+return false;
+};
+});
+
+$(battlePetJson.petTypes).each (function (idxDS, DS) {
+if (DS.strongAgainstId === bnPetTypes.id) {
+// we found the pet family that is weak against this one
+console.log ("DEF: Strong vs. "+DS.name);
+return false;
+};
+});
+
+return false; // end the loop once found
+
+};
+});
+
+// DESCRIPTION
+myCss = "font-size:0.90em;";
+assembleHtml ("div", "", myCss, bnPetsSpecies.description);
+$(html).appendTo("#wbpt_desc_"+bnPetSlots.slot);
+gadgets.window.adjustHeight(); // resize window
+html = ""; // clear out the HTML
+
+});
+
+// We're done with this pet, so break the loop and start on the next one
+return false;
+
+};
+});
+});
+});
+
+}); // end the PET API getJSON
+</script>
+</body>
+</html>
+
 
 ]]>
 </Content>
