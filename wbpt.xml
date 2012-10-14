@@ -153,8 +153,11 @@ Description
 // div the pet slot
 myCss = "";
 assembleHtml ("div", "wbpt_head_"+bnPetSlots.slot, myCss, "");
+assembleHtml ("div", "", cssClear, "");
 assembleHtml ("div", "wbpt_stat_"+bnPetSlots.slot, myCss, "");
+assembleHtml ("div", "", cssClear, "");
 assembleHtml ("div", "wbpt_desc_"+bnPetSlots.slot, myCss, "");
+assembleHtml ("div", "", cssClear, "");
 $(html).appendTo("#wbpt_PetSlot_"+bnPetSlots.slot);
 gadgets.window.adjustHeight(); // resize window
 html = "";
