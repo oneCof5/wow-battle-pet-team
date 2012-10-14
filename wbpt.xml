@@ -99,6 +99,7 @@ html += "powered by <a href=\"http://www.thegrownupgamer.com/p/wbpt.html\" ";
 html += "target=\"_blank\" style=\""+myCss+"\">WBPT</a></div>";
 $(html).appendTo("#WBPT_att");
 gadgets.window.adjustHeight(); // resize window
+html = "";
 
 
 // assign the base battlenet host
