@@ -46,17 +46,12 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 </head>
 <body>
-<!-- the body has one div, and the script populates it -->
-<div id="WBPT"></div><div id="WBPT_att"></div>
+<div id="WBPT"></div>
+<div id="WBPT_att"></div>
 <script type="text/javascript">
 
 // VARIABLES
-var html="";
-var myCss="";
-var cssClear = "clear:both; display:block; overflow:hidden; visibility:hidden; ";
-cssClear += "width:0; height:0;";
-var bnHost = "";
-var bnUrl = "";
+var cssClear = "clear:both;display:block;overflow:hidden;visibility:hidden;width:0;height:0;";
 
 // define color codes for CSS
 var wbpt_qc = new Array();
@@ -91,26 +86,25 @@ html+= newHtml;
 
 // PROGRAM FLOW
 
-// write footer
-myCss="font-size:.75em; text-align:right;";
-html = "<div style=\""+myCss+"\">";
-myCss="color:"+wbpt_fc+";";
+// write attribution
+var myCss = "font-size:0.75em;text-align:right;";
+var html = "<div style=\""+myCss+"\">";
+myCss ="color:"+wbpt_fc+";";
 html += "powered by <a href=\"http://www.thegrownupgamer.com/p/wbpt.html\" ";
 html += "target=\"_blank\" style=\""+myCss+"\">WBPT</a></div>";
 $(html).appendTo("#WBPT_att");
 gadgets.window.adjustHeight(); // resize window
 html = "";
 
-
 // assign the base battlenet host
-bnHost="http://"+bnRegion+".battle.net";
+var bnHost="http://"+bnRegion+".battle.net";
 
 // Figure out if we need to change the host for China
 if (bnRegion == "cn") { bnHost="http://www.battlenet.com.cn"; };
 
 /* First, get the pet information from the APIs at /api/wow/data/pet/types */
 
-bnUrl=bnHost+"/api/wow/data/pet/types";
+var bnUrl=bnHost+"/api/wow/data/pet/types";
 
 // if a locale is selected, append it
 if (bnLocale != "") { bnUrl=bnUrl+"?locale="+bnLocale; };
