@@ -4,8 +4,8 @@
 	title_url="http://www.TheGrownUpGamer.com/p/wow-battle-pet-team.html"
 	description="A Blogger Gadget to show a character's current battle pet team in the World of Warcraft(TM)"
 	height="200"
-	screenshot="http://2.bp.blogspot.com/-amysvH4Gv6I/UD5IDYWkK-I/AAAAAAAAAU8/42qyjDIUS-4/s1600/WAFB_Screenshot.png"
-	thumbnail="http://3.bp.blogspot.com/-i8VNii2FERo/UD5IASClBXI/AAAAAAAAAU0/Rdy1900r5Nc/s1600/WAFB_Thumb.png"
+	screenshot="http://3.bp.blogspot.com/-62i-auzmOVM/UHtDODaKe7I/AAAAAAAAAg8/vcbPLEGmfDk/s1600/Screen+Shot+2012-10-14+at+6.56.10+PM.png"
+	thumbnail="http://3.bp.blogspot.com/-rRAxpOW4Elk/UF-xVfIc6GI/AAAAAAAAAe4/ifHHDVfq_Fo/s1600/GamerBanner.png"
 	author="Chris"
 	author_email="info@TheGrownUpGamer.com" >
 	<Require feature="dynamic-height" />
@@ -336,6 +336,15 @@ return false;
 });
 
 }); // end the PET API getJSON
+
+myCss="font-size:.75px; text-align:right;";
+html = "<div style=\""+myCss+"\">";
+myCss="color:"+wbpt_fc+";";
+html += "powered by <a href=\"http://www.thegrownupgamer.com/p/wbpt.html\" ";
+html += "target=\"_blank\" style=\""+myCss+"\">WBPT</a></div>";
+$(html).appendTo("#oCo5_BPT");
+gadgets.window.adjustHeight(); // resize window
+
 </script>
 </body>
 </html>
