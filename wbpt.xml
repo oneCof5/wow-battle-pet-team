@@ -47,7 +47,7 @@
 </head>
 <body>
 <!-- the body has one div, and the script populates it -->
-<div id="oCo5_BPT"></div>
+<div id="WBPT"></div><div id="WBPT_att"></div>
 <script type="text/javascript">
 
 // VARIABLES
@@ -90,6 +90,17 @@ html+= newHtml;
 }
 
 // PROGRAM FLOW
+
+// write footer
+myCss="font-size:.75em; text-align:right;";
+html = "<div style=\""+myCss+"\">";
+myCss="color:"+wbpt_fc+";";
+html += "powered by <a href=\"http://www.thegrownupgamer.com/p/wbpt.html\" ";
+html += "target=\"_blank\" style=\""+myCss+"\">WBPT</a></div>";
+$(html).appendTo("#WBPT_att");
+gadgets.window.adjustHeight(); // resize window
+
+
 // assign the base battlenet host
 bnHost="http://"+bnRegion+".battle.net";
 
@@ -129,7 +140,7 @@ $(bnData.petSlots).each(function(idxBPT, bnPetSlots) {
 myCss = "margin: 0px 0px 10px 0px;";
 myCss += "font-family:"+wbpt_ff+"; color:"+wbpt_fc+"; font-size:"+wbpt_fs+";";
 assembleHtml ("div", "wbpt_PetSlot_"+bnPetSlots.slot, myCss, "");
-$(html).appendTo("#oCo5_BPT");
+$(html).appendTo("#WBPT");
 gadgets.window.adjustHeight(); // resize window
 
 html = "";
@@ -336,14 +347,6 @@ return false;
 });
 
 }); // end the PET API getJSON
-
-myCss="font-size:.75px; text-align:right;";
-html = "<div style=\""+myCss+"\">";
-myCss="color:"+wbpt_fc+";";
-html += "powered by <a href=\"http://www.thegrownupgamer.com/p/wbpt.html\" ";
-html += "target=\"_blank\" style=\""+myCss+"\">WBPT</a></div>";
-$(html).appendTo("#oCo5_BPT");
-gadgets.window.adjustHeight(); // resize window
 
 </script>
 </body>
