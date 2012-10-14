@@ -87,7 +87,7 @@ html+= newHtml;
 // PROGRAM FLOW
 
 // write attribution
-var myCss = "color:"+wbpt_fc+"; font-size:10px; text-align:right;";";
+var myCss = "color:"+wbpt_fc+"; font-size:10px; text-align:right;";
 var html = "<div style=\""+myCss+"\">";
 myCss ="color:"+wbpt_fc+";";
 html += "powered by <a href=\"http://www.thegrownupgamer.com/p/wbpt.html\" ";
