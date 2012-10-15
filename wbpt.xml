@@ -12,7 +12,7 @@
 	<Require feature="setprefs" />
 	<Optional feature="skins" />
 </ModulePrefs>
-<UserPref name="wbpt_bnReg" display_name="BattleNet Region" default_value="us" datatype="enum">
+<UserPref name="wbpt_bnReg" display_name="BattleNet Region" default_value="us" datatype="enum" required="true">
 	<EnumValue value="us" display_value="US"/>
 	<EnumValue value="eu" display_value="Europe"/>
 	<EnumValue value="kr" display_value="Korea"/>
@@ -32,11 +32,12 @@
 	<EnumValue value="es_ES" display_value="EU Español"/>
 	<EnumValue value="pt_PT" display_value="EU Português"/>
 </UserPref>
-<UserPref name="wbpt_bnRealm" display_name="Realm Stub (use a dash for spaces in the realm name)" default_value="borean-tundra"/>
-<UserPref name="wbpt_charName" display_name="Character Name" default_value="Cibolero"/>
-<UserPref name="wbpt_fontFamily" display_name="Font Family" default_value="Arial, Helvetica, sans-serif"/>
-<UserPref name="wbpt_fontColor" display_name="Font Color" default_value="#FFFFFF"/>
-<UserPref name="wbpt_fontSize" display_name="Font Size" default_value="14px"/>
+<UserPref name="wbpt_bnRealm" display_name="Realm Stub (use a dash for spaces in the realm name)" default_value="borean-tundra" required="true"/>
+<UserPref name="wbpt_charName" display_name="Character Name" default_value="Cibolero" required="true"/>
+<UserPref name="wbpt_fontFamily" display_name="Font Family" default_value="Arial, Helvetica, sans-serif" required="true"/>
+<UserPref name="wbpt_fontColor" display_name="Font Color" default_value="#000000" required="true"/>
+<UserPref name="wbpt_fontSize" display_name="Font Size" default_value="14px" required="true"/>
+<UserPref name="wbpt_backColor" display_name="Background Color" default_value="transparent" required="false"/>
 <Content type="html">
 <![CDATA[
 
@@ -74,6 +75,7 @@ var bnCharacter=escape(prefs.getString("wbpt_charName"));
 var wbpt_ff=prefs.getString("wbpt_fontFamily");
 var wbpt_fc=prefs.getString("wbpt_fontColor");
 var wbpt_fs=prefs.getString("wbpt_fontSize");
+var wbpt_bc=prefs.getString("wbpt_backColor");
 
 // FUNCTIONS
 /* create some HTML */
@@ -84,6 +86,16 @@ if (style != "") { newHtml += " style=\""+style+"\""; };
 newHtml += ">"+text+"</"+tag+">";
 html+= newHtml;
 }
+
+/* update the background color */
+function changeBackColor (divId, color) {
+var divID = "#"+divId;
+$(divID).css("background-color", color);
+}
+
+changeBackColor ("WBPT", wbpt_bc);
+changeBackColor ("WBPT_att", wbpt_bc);
+
 
 // PROGRAM FLOW
 
