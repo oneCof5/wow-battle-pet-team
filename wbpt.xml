@@ -19,7 +19,8 @@
 	<EnumValue value="tw" display_value="Taiwan"/>
 	<EnumValue value="cn" display_value="China"/>
 </UserPref>
-<UserPref name="wbpt_bnLoc" display_name="BattleNet Region: Locale" datatype="enum" required="false">
+<UserPref name="wbpt_bnLoc" display_name="BattleNet Region: Locale (for US and EU only)" default_value="" datatype="enum" required="false">
+	<EnumValue value="" display_value="none"/>
 	<EnumValue value="en_US" display_value="US English"/>
 	<EnumValue value="es_MX" display_value="US Español"/>
 	<EnumValue value="pt_BR" display_value="US Português"/>
@@ -31,11 +32,11 @@
 	<EnumValue value="es_ES" display_value="EU Español"/>
 	<EnumValue value="pt_PT" display_value="EU Português"/>
 </UserPref>
-<UserPref name="wbpt_bnRealm" display_name="Realm Stub" default_value="borean-tundra"/>
+<UserPref name="wbpt_bnRealm" display_name="Realm Stub (use a dash for spaces in the realm name)" default_value="borean-tundra"/>
 <UserPref name="wbpt_charName" display_name="Character Name" default_value="Cibolero"/>
 <UserPref name="wbpt_fontFamily" display_name="Font Family" default_value="Arial, Helvetica, sans-serif"/>
 <UserPref name="wbpt_fontColor" display_name="Font Color" default_value="#FFFFFF"/>
-<UserPref name="wbpt_fontSize" display_name="Font Size" default_value="16px"/>
+<UserPref name="wbpt_fontSize" display_name="Font Size" default_value="14px"/>
 <Content type="html">
 <![CDATA[
 
