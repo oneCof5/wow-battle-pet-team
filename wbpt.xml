@@ -157,7 +157,7 @@ html = "";
 $(bnData.pets.collected).each (function(idxBP, bnPets) {
 
 // match the ID in petSlots with the associated pets entry (get the details)
-if (bnPets.battlePetId == bnPetSlots.battlePetId) {
+if (bnPets.battlePetGuid == bnPetSlots.battlePetGuid) {
 /*
 Now that we have the correct pet, write out the following:
 Pet Icon
